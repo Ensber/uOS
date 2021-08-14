@@ -1,0 +1,8 @@
+{
+	"folders": [
+		{
+			"name": "SSH FS - unnamed",
+			"uri": "ssh://unnamed/home/pi/luaserver/"
+		}
+	]
+}

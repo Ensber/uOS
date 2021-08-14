@@ -1,0 +1,45 @@
+#ifndef TASK_HPP
+#define TASK_HPP
+
+#include "../interfaces/Task.hpp"
+#include "../libs/LinkedList.h"
+
+struct taskData
+{
+    I_Task* task = nullptr;
+    uint64_t runtime = 0;
+    int pid;
+};
+
+struct strippedTaskData {
+    uint64_t runtime;
+    int state;
+    int pid;
+    String name;
+};
+
+struct strippedTaskDataContainer
+{
+    strippedTaskData* data; // array
+    int size;
+};
+
+
+class dispatcher {
+    private:
+        std::vector<taskData> taskList;
+        int pidCounter = 1;
+        uint64_t dispatcher_runtime = 0;
+    public:
+        int add(I_Task* task);
+        bool kill(int pid);
+        uint64_t run();
+        strippedTaskDataContainer getTelemetry();
+
+        bool telemetry = true;
+        void clearTelemetry();
+};
+
+dispatcher globalEventloop;
+
+#endif
