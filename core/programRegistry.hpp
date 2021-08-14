@@ -3,6 +3,8 @@
 
 #include "pEnv.hpp"
 
+#include <vector>
+
 class programRegistry {
     public:
         programRegistry();

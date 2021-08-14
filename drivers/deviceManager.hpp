@@ -2,9 +2,9 @@
 #define DEVICEMANAGER_HPP
 
 #include "../interfaces/IODevice.hpp"
-#include "../libs/LinkedList.h"
-
 #include "lora.hpp"
+
+#include <vector>
 
 namespace devices {
     std::vector<I_IODevice*> deviceList;

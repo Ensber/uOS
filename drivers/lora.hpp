@@ -4,7 +4,6 @@
 #include <SPI.h>
 #include <LoRa.h>
 #include "../interfaces/IODevice.hpp"
-#include "../libs/LinkedList.h"
 
 namespace devices { 
     class lora : public I_IODevice {

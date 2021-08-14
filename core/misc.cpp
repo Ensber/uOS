@@ -1,4 +1,7 @@
 #include "pEnv.hpp"
+#include "misc.hpp"
+
+#include <vector>
 
 bool assert(pEnv env, bool state, String message) {
     if (!state) {

@@ -3,7 +3,6 @@ Class for adding programs to the registry
 */
 //#error programregistry
 #include "programRegistry.hpp"
-#include "../libs/LinkedList.h"
 
 programRegistry::programRegistry() {
     this->pReg = std::vector<programEntry>();

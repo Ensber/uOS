@@ -1,9 +1,10 @@
 #ifndef PS_HPP
 #define PS_HPP
 
-#include "../libs/LinkedList.h"
 #include "../core/task.hpp"
 #include "../interfaces/Task.hpp"
+
+#include <vector>
 
 namespace program {
     class ps {

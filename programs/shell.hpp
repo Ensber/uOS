@@ -1,7 +1,6 @@
 #ifndef SHELL_HPP
 #define SHELL_HPP
 
-#include "../libs/LinkedList.h"
 #include "../interfaces/Task.hpp"
 
 namespace program {
@@ -10,7 +9,7 @@ namespace program {
         public:
             class process : public I_Task {
                 public:
-                    process(pEnv* env):I_Task(env){};
+                    process(pEnv* env) : I_Task(env){};
                     int run();
                     ~process();
             };

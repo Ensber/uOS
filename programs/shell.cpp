@@ -1,8 +1,9 @@
-#include "../libs/LinkedList.h"
 #include "../core/programRegistry.hpp"
 #include "../core/task.hpp"
 #include "../drivers/deviceManager.hpp"
 #include "shell.hpp"
+
+#include <vector>
 
 bool __SHELL_INIT = false;
 void program::shell::init() {

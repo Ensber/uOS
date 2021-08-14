@@ -3,6 +3,8 @@
 
 #include "pEnv.hpp"
 
+#include <vector>
+
 bool assert(pEnv env, bool state, String message);
 String formatMicrosToTime(uint64_t time);
 double dround(double number, int digits);

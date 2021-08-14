@@ -1,3 +1,4 @@
+#include "../interfaces/Task.hpp"
 #include "task.hpp"
 
 int dispatcher::add(I_Task* task) {

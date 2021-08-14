@@ -2,7 +2,6 @@
 #define _INCLUDECORE_HPP
 
 // librarys
-#include "../libs/LinkedList.h" // https://github.com/ivanseidel/std::vector
 
 #include "pEnv.hpp"
 #include "pEnv.cpp"

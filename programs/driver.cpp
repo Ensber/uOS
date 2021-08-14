@@ -3,6 +3,8 @@
 #include "driver.hpp"
 #include "shell.hpp"
 
+#include <vector>
+
 bool __DRIVER_INIT = false;
 void program::driver::init() {
     // only init the shell program once

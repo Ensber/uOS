@@ -2,7 +2,6 @@
 #define DRV_SERIAL_HPP
 
 #include "../interfaces/IODevice.hpp"
-#include "../libs/LinkedList.h"
 
 namespace devices { 
     class serial : public I_IODevice {

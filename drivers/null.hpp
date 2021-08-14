@@ -2,7 +2,6 @@
 #define DRV_NULL_HPP
 
 #include "../interfaces/IODevice.hpp"
-#include "../libs/LinkedList.h"
 
 namespace devices { 
     class nullDrv : public I_IODevice {

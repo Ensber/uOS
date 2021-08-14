@@ -2,7 +2,8 @@
 #define TASK_HPP
 
 #include "../interfaces/Task.hpp"
-#include "../libs/LinkedList.h"
+
+#include <vector>
 
 struct taskData
 {
@@ -23,7 +24,6 @@ struct strippedTaskDataContainer
     strippedTaskData* data; // array
     int size;
 };
-
 
 class dispatcher {
     private:
