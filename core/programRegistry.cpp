@@ -1,8 +1,9 @@
 /*
 Class for adding programs to the registry
 */
-//#error programregistry
 #include "programRegistry.hpp"
+
+#include <vector>
 
 programRegistry::programRegistry() {
     this->pReg = std::vector<programEntry>();

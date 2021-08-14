@@ -1,6 +1,8 @@
 #include "../interfaces/Task.hpp"
 #include "task.hpp"
 
+#include <vector>
+
 int dispatcher::add(I_Task* task) {
     taskData data;
     data.task = task;

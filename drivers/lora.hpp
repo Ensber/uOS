@@ -1,9 +1,11 @@
 #ifndef DRV_LORA_HPP
 #define DRV_LORA_HPP
 
+#include "../interfaces/IODevice.hpp"
+
 #include <SPI.h>
 #include <LoRa.h>
-#include "../interfaces/IODevice.hpp"
+#include <vector>
 
 namespace devices { 
     class lora : public I_IODevice {

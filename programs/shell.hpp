@@ -3,6 +3,8 @@
 
 #include "../interfaces/Task.hpp"
 
+#include <vector>
+
 namespace program {
     class shell {
         private:

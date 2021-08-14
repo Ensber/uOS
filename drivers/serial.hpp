@@ -3,6 +3,8 @@
 
 #include "../interfaces/IODevice.hpp"
 
+#include <vector>
+
 namespace devices { 
     class serial : public I_IODevice {
         public:

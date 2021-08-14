@@ -3,6 +3,8 @@
 
 #include "../core/pEnv.hpp"
 
+#include <vector>
+
 namespace program {
     class driver {
         public:

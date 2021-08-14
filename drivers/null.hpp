@@ -3,6 +3,8 @@
 
 #include "../interfaces/IODevice.hpp"
 
+#include <vector>
+
 namespace devices { 
     class nullDrv : public I_IODevice {
         public:

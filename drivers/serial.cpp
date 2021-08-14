@@ -1,5 +1,7 @@
 #include "deviceManager.hpp"
 
+#include <vector>
+
 namespace devices {
     int serial::uidCounter = 0;
 
