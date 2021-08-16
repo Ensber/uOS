@@ -3,8 +3,6 @@
 #include "../drivers/deviceManager.hpp"
 #include "shell.hpp"
 
-#include <vector>
-
 bool __SHELL_INIT = false;
 void program::shell::init() {
     // only init the shell program once
@@ -38,10 +36,6 @@ int program::shell::execute(pEnv env, String command) {
 
 
 // TASK CODE //
-
-program::shell::process::~process() {
-    delete this->env;
-}
 
 int program::shell::process::run() {
     this->nextRun(0.1);

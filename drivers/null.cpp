@@ -1,8 +1,6 @@
 #include "deviceManager.hpp"
 #include "null.hpp"
 
-#include <vector>
-
 namespace devices {
     int nullDrv::uidCounter = 0;
 

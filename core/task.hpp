@@ -30,7 +30,9 @@ class dispatcher {
         std::vector<taskData> taskList;
         int pidCounter = 1;
         uint64_t dispatcher_runtime = 0;
+        std::vector<int> killList;
     public:
+        dispatcher();
         int add(I_Task* task);
         bool kill(int pid);
         uint64_t run();

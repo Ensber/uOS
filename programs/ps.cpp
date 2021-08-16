@@ -25,6 +25,11 @@ int program::ps::main(pEnv env, std::vector<String>* args) {
         return 0;
     }
 
+    if (args->size() == 1) {
+        env.std_err->println("usage: ps <command> <args>");
+        return 1;
+    }
+
     String command = args->at(0);
     String arg = args->at(1);
     if (command == "kill") {
@@ -42,6 +47,8 @@ int program::ps::main(pEnv env, std::vector<String>* args) {
 
 int program::ps::process::run() {
     struct strippedTaskDataContainer cTelemetry = globalEventloop.getTelemetry();
+    String wifiStatus;
+    String secondLine;
     uint64_t cTime = micros64();
     uint64_t timeDelta = cTime - this->lastTimeCheck;
     uint64_t totalRuntimeUsage;
@@ -49,7 +56,7 @@ int program::ps::process::run() {
 
     bool cellActive;
 
-    this->nextRun(0.5);
+    this->nextRun(1);
     this->env->std_out->println("\nPS LIST");
     int offset = 0;
     int tableWidth;
@@ -117,8 +124,17 @@ int program::ps::process::run() {
             }
 
             // general info
-            this->env->std_out->println(String("Uptime      : ")+formatMicrosToTime(micros()));
-            this->env->std_out->println(String("Free memory : ")+ESP.getFreeHeap());
+            if (WiFi.isConnected()) {
+                IPAddress ip = WiFi.localIP();
+                wifiStatus = String() + ip[0] + "." + ip[1] + "." + ip[2] + "." + ip[3];
+            } else {
+                wifiStatus = "unconnected";
+            }
+            this->env->std_out->println(String("Uptime      : ")+formatMicrosToTime(micros64())+"                       WIFI         : "+wifiStatus);
+            secondLine = String("Free memory : ")+ESP.getFreeHeap();
+            for (int i=secondLine.length(); i<49; i++) secondLine += ' ';
+            secondLine += String()+"Cycle health : " + round(timeMultiplyer*100)/100;
+            this->env->std_out->println(secondLine);
             this->env->std_out->print  (String("CPU Usage   : ["));
             cellActive = true;
             CPU_usage = (double)totalRuntimeUsage/(double)timeDelta;

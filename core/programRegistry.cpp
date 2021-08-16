@@ -3,8 +3,6 @@ Class for adding programs to the registry
 */
 #include "programRegistry.hpp"
 
-#include <vector>
-
 programRegistry::programRegistry() {
     this->pReg = std::vector<programEntry>();
     this->pAlias = std::vector<programAlias>();
@@ -26,13 +24,13 @@ programRegistry::returnState programRegistry::runProgram(pEnv env, String name, 
             state.found = true;
             state.index = i;
             state.returncode = entry.function(env, args);
+            delete args;
             return state;
         }
     }
     state.found = false;
     state.index = -1;
     state.returncode = -1;
-    //args->clear();
     delete args;
     return state; // not found 
 }

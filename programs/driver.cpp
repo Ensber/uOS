@@ -3,8 +3,6 @@
 #include "driver.hpp"
 #include "shell.hpp"
 
-#include <vector>
-
 bool __DRIVER_INIT = false;
 void program::driver::init() {
     // only init the shell program once
@@ -23,6 +21,11 @@ int program::driver::main(pEnv env, std::vector<String>* args) {
     if (args->size() == 0) {
         program::shell::execute(env, "man driver");
         return 0;
+    }
+
+    if (args->size() == 1) {
+        env.std_err->println("usage: driver <command> <args>");
+        return 1;
     }
 
     String command = args->at(0);
@@ -51,5 +54,7 @@ int program::driver::main(pEnv env, std::vector<String>* args) {
         for (int i=0;i<devices::deviceList.size(); i++) {
             env.std_out->println(String()+ i + " -> " + devices::deviceList[i]->UID + " [" + devices::deviceList[i]->type + "]");
         }
+        return 0;
     }
+    return 0;
 }

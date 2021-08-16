@@ -1,9 +1,15 @@
 #include "definitions.hpp"
+
+#include <vector>
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
+#include <WiFiClient.h>
+
+ESP8266WiFiMulti WiFiMulti;
+
 #include "core/_includeCore.hpp"
 #include "drivers/_includeDrivers.hpp"
 #include "programs/_includePrograms.hpp"
-
-#include <vector>
 
 struct a
 {
@@ -14,8 +20,6 @@ struct b
 {
     a* aLink;
 };
-
-
 
 void setup() {
     Serial.begin(115200);
@@ -35,7 +39,7 @@ void setup() {
 
     // init lora
     
-    program::shell::execute(env, "driver init lora -f 433000000 -pCS 15 -pRST 5 -pIRQ 4");
+    // program::shell::execute(env, "driver init lora -f 433000000 -pCS 15 -pRST 5 -pIRQ 4");
     Serial.println("after lora init");
 
     // debug code
@@ -56,24 +60,17 @@ void setup() {
     // debug code for finding out how memory works
     int mem = ESP.getFreeHeap();
 
-    std::vector<String>* x = new std::vector<String>;
-    x->push_back("test");
-    x->at(0);
+    //program::shell::execute(env, "wifi");
 
-    // std::vector<String>* x = new std::vector<String>;
-    // x->push_back("test");
     int mem2 = ESP.getFreeHeap();
 
     Serial.println(String("AVAILABLE MEM BEFORE: ")+mem);
     Serial.println(String("AVAILABLE MEM AFTER : ")+mem2);
     Serial.println(String("Difference: ")+(mem-mem2));
 
-    // while (1)
-    // ESP.wdtFeed();
+    //program::shell::execute(env, "ps");
+    //for (int i=0;i<30;i++)
 
-    program::shell::execute(env, "shell");
-    program::shell::execute(env, "shell");
-    program::shell::execute(env, "shell");
     program::shell::execute(env, "shell");
     program::shell::execute(env, "ps");
 }
@@ -82,6 +79,7 @@ void loop() {
     uint64_t ne = globalEventloop.run();
     if (ne > micros64()) {
         ne = ne - micros64();
+        
         delay(ne/1000);
     }
 }

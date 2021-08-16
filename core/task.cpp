@@ -1,7 +1,9 @@
 #include "../interfaces/Task.hpp"
 #include "task.hpp"
 
-#include <vector>
+dispatcher::dispatcher() {
+    this->killList.reserve(10);
+}
 
 int dispatcher::add(I_Task* task) {
     taskData data;
@@ -14,7 +16,10 @@ int dispatcher::add(I_Task* task) {
 bool dispatcher::kill(int pid) {
     for (int i=0; i<this->taskList.size(); i++) {
         if (this->taskList.at(i).pid == pid) {
-            this->taskList.erase(this->taskList.begin() + i);
+            this->killList.push_back(pid);
+            // delete this->taskList[i].task->env;
+            // delete this->taskList[i].task;
+            // this->taskList.erase(this->taskList.begin() + i);
             return true;
         }
     }
@@ -51,9 +56,27 @@ uint64_t dispatcher::run() {
             // kill task if the returncode is not 0
             if (returnCode) {
                 Serial.println(cTask.task->name + " stopped");
+                // delete this->taskList[i].task->env;
+                // delete this->taskList[i].task;
                 this->taskList.erase(this->taskList.begin() + i);
             }
         }
+    }
+    if (this->killList.size()) {
+        for (int k=0; k<this->killList.size(); k++) {
+            int pid = this->killList[k];
+            for (int i=0; i<this->taskList.size(); i++) {
+                if (this->taskList[i].pid == pid) {
+                    Serial.println(String("Killing: ")+this->taskList[i].task->name);
+                    // delete this->taskList[i].task->env;
+                    // delete this->taskList[i].task;
+                    this->taskList.erase(this->taskList.begin() + i);
+                    break;
+                }
+            }
+        }
+        // std::vector<int>().swap(this->killList);
+        this->killList.clear();
     }
     this->dispatcher_runtime += micros64() - dispatcher_start;
     return nextExecution;

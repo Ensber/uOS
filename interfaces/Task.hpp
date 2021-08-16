@@ -6,6 +6,8 @@
 class I_Task
 {
     public:
+        virtual ~I_Task();
+
         pEnv* env;
 
         int state = 0;
@@ -24,6 +26,10 @@ void I_Task::nextRun(double time) {
 
 I_Task::I_Task(pEnv* env) {
     this->env = env;
+}
+
+I_Task::~I_Task() {
+    delete this->env;
 }
 
 #endif

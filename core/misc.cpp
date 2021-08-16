@@ -1,8 +1,6 @@
 #include "pEnv.hpp"
 #include "misc.hpp"
 
-#include <vector>
-
 bool assert(pEnv env, bool state, String message) {
     if (!state) {
         env.std_err->println(message);
@@ -49,7 +47,11 @@ argResponse findArg(std::vector<String>* args, String name) {
     for (int i=0; i<args->size(); i++) {
         if (args->operator[](i) == name) {
             out.found = true;
-            out.arg = args->operator[](i+1);
+            if (args->size() < i + 1) {
+                out.arg = "";
+            } else {
+                out.arg = args->operator[](i+1);
+            }
         }
     }
     return out;

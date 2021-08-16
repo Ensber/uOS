@@ -1,10 +1,6 @@
 #include "../core/misc.hpp"
 #include "lora.hpp"
 
-#include <SPI.h>
-#include <LoRa.h>
-#include <vector>
-
 namespace devices {
     int lora::uidCounter = 0;
 
