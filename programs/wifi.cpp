@@ -40,6 +40,10 @@ bool program::wifi::process::isRunning = false;
 
 int program::wifi::process::run() {
     this->nextRun(1);
+    
+    // make sure to only run, if the env is not occupied
+    if (this->isEnvLocked()) return 0;
+
     if (WiFiMulti.run() == WL_CONNECTED) {
         program::wifi::process::isRunning = false;
         this->env->std_out->print(String()+"Connected! IP: ");

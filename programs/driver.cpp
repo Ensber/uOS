@@ -10,6 +10,7 @@ void program::driver::init() {
     __DRIVER_INIT = true;
 
     os::programs.addProgram("driver", &program::driver::main);
+    os::programs.addAlias("init", "driver init");
 }
 
 String program::driver::version = "\nDriver-manager 0.1.0";
@@ -33,14 +34,16 @@ int program::driver::main(pEnv env, std::vector<String>* args) {
     args->erase(args->begin(), args->begin() + 1);
     I_IODevice* device = nullptr;
     if (command == "init") {
-        if (!assert(env, arg != "", "usage: driver start <type>")) return 1;
+        if (!uAssert(env, arg != "", "usage: driver start <type>")) return 1;
 
         // initialize device
         if (arg == "serial") device = new devices::serial(args);
-        if (arg == "lora")   device = new devices::lora(args);
+        #ifdef USE_LORA
+            if (arg == "lora")   device = new devices::lora(args);
+        #endif
         if (arg == "null")   device = new devices::nullDrv(args);
 
-        if (!assert(env, device != nullptr, "device '" + arg + "' not found")) return 1;
+        if (!uAssert(env, device != nullptr, "device '" + arg + "' not found")) return 1;
         if (!device->initialized) {
             env.std_err->println("Device did not initialize correctly\nError: " + device->error);
             return 1;

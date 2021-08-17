@@ -3,6 +3,7 @@
 
 #include "../core/task.hpp"
 #include "../interfaces/Task.hpp"
+#include "../definitions.hpp"
 
 #include <vector>
 

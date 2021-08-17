@@ -17,9 +17,6 @@ bool dispatcher::kill(int pid) {
     for (int i=0; i<this->taskList.size(); i++) {
         if (this->taskList.at(i).pid == pid) {
             this->killList.push_back(pid);
-            // delete this->taskList[i].task->env;
-            // delete this->taskList[i].task;
-            // this->taskList.erase(this->taskList.begin() + i);
             return true;
         }
     }
@@ -40,24 +37,28 @@ uint64_t dispatcher::run() {
         taskData cTask = this->taskList.at(i);
         if (cTask.task->runAfter < nextExecution) 
             nextExecution = cTask.task->runAfter;
-        //Serial.println(String()+"T"+cTask.pid+" "+(long)micros64()+", "+(long)cTask.task->runAfter);
+        
+        // check if task is due
         if (micros64() >= cTask.task->runAfter) {
             int returnCode;
+            // run task
             if (this->telemetry) {
                 uint64_t start = micros64();
                 returnCode = cTask.task->run();
                 uint64_t runtime = micros64() - start;
-                cTask.runtime += runtime;
+                this->taskList[i].runtime += runtime;
                 dispatcher_start += runtime;
-                this->taskList[i] = cTask;
+                if (runtime > this->taskList[i].longestCycleTime)
+                    this->taskList[i].longestCycleTime = runtime/1000;
             } else {
                 returnCode = cTask.task->run();
             }
+
             // kill task if the returncode is not 0
             if (returnCode) {
-                Serial.println(cTask.task->name + " stopped");
-                // delete this->taskList[i].task->env;
-                // delete this->taskList[i].task;
+                Serial.println(cTask.task->name + " stopped with exit code " + returnCode);
+                    
+                this->killList.push_back(cTask.pid);
                 this->taskList.erase(this->taskList.begin() + i);
             }
         }
@@ -93,11 +94,12 @@ strippedTaskDataContainer dispatcher::getTelemetry() {
     container.data[0].name = String()+"[dispatcher]";
 
     for (int i=1; i<container.size; i++) {
-        taskData cTask = this->taskList.at(i-1);
+        taskData cTask = this->taskList[i-1];
         container.data[i].pid = cTask.pid;
         container.data[i].runtime = cTask.runtime;
         container.data[i].state = cTask.task->state;
         container.data[i].name = cTask.task->name;
+        container.data[i].longestCycleTime = cTask.longestCycleTime;
     }
 
     return container;

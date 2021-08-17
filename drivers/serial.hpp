@@ -26,6 +26,8 @@ namespace devices {
             // int   beginPacket(bool implicid);
             int   write(byte byte);
             int   write(byte buffer[], int size);
+            int   println(String str);
+            int   print(String str);
             // void  endPacket();
             // void  endPacket(bool async);
 

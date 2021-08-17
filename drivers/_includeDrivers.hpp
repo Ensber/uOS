@@ -7,8 +7,10 @@
 #include "null.hpp"
 #include "null.cpp"
 
-#include "lora.hpp"
-#include "lora.cpp"
+#ifdef USE_LORA
+    #include "lora.hpp"
+    #include "lora.cpp"
+#endif
 
 #include "serial.hpp"
 #include "serial.cpp"

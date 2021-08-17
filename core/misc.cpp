@@ -1,7 +1,7 @@
 #include "pEnv.hpp"
 #include "misc.hpp"
 
-bool assert(pEnv env, bool state, String message) {
+bool uAssert(pEnv env, bool state, String message) {
     if (!state) {
         env.std_err->println(message);
     }

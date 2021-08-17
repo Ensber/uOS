@@ -2,6 +2,7 @@
 #define WIFI_PROGRAM_HPP
 
 #include "../interfaces/Task.hpp"
+#include "../definitions.hpp"
 
 #include <vector>
 

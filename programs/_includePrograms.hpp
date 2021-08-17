@@ -10,14 +10,22 @@
 #include "ps.hpp"
 #include "ps.cpp"
 
-#include "wifi.hpp"
-#include "wifi.cpp"
+#include "fs.hpp"
+#include "fs.cpp"
+
+#ifdef USE_WIFI
+    #include "wifi.hpp"
+    #include "wifi.cpp"
+#endif
 
 void initPrograms() {
     program::shell::init();
     program::driver::init();
     program::ps::init();
-    program::wifi::init();
+    #ifdef USE_WIFI
+        program::wifi::init();
+    #endif
+    program::fs::init();
 }
 
 #endif

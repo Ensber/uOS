@@ -24,8 +24,17 @@ namespace devices {
         deviceList.push_back(this);
     }
 
-    int serial::available() {return this->serialDevice->available();}
-    char serial::read() {return this->serialDevice->read();}
-    int serial::write(byte c) {return this->serialDevice->write(c);}
-    int serial::write(byte buffer[], int size) {return this->serialDevice->write(buffer, size);}
+    // pass through to the serial device
+    int serial::available()
+        {return this->serialDevice->available();}
+    char serial::read()
+        {return this->serialDevice->read();}
+    int serial::write(byte c)
+        {return this->serialDevice->write(c);}
+    int serial::write(byte buffer[], int size)
+        {return this->serialDevice->write(buffer, size);}
+    int serial::println(String str) 
+        {return this->serialDevice->println(str);};
+    int serial::print(String str) 
+        {return this->serialDevice->print(str);};
 }

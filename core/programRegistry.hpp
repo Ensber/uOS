@@ -23,9 +23,9 @@ class programRegistry {
             bool found = false;
         };
 
-        struct programAlias{
+        struct programAlias {
             String from;
-            String to;
+            std::vector<String>* to;
         };
 
         std::vector<String>* parseArgumentList(String args); //

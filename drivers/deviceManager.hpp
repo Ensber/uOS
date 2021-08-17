@@ -2,7 +2,6 @@
 #define DEVICEMANAGER_HPP
 
 #include "../interfaces/IODevice.hpp"
-#include "lora.hpp"
 
 #include <vector>
 

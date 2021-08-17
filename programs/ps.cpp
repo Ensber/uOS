@@ -11,6 +11,7 @@ void program::ps::init() {
     __PS_INIT = true;
 
     os::programs.addProgram("ps", &program::ps::main);
+    os::programs.addAlias("kill", "ps kill");
 }
 
 String program::ps::version = "\nProcess 0.1.0";
@@ -46,6 +47,17 @@ int program::ps::main(pEnv env, std::vector<String>* args) {
 // TASK CODE //
 
 int program::ps::process::run() {
+    this->nextRun(1);
+    
+    // make sure to only run, if the env is not occupied
+    if (this->isEnvLocked()) return 0;
+
+    if (REQ_LOW_PERFORMANCE) {
+        this->env->std_out->println("[PS] skipping due to performance request");
+        this->nextRun(5);
+        return 0;
+    }
+
     struct strippedTaskDataContainer cTelemetry = globalEventloop.getTelemetry();
     String wifiStatus;
     String secondLine;
@@ -56,7 +68,6 @@ int program::ps::process::run() {
 
     bool cellActive;
 
-    this->nextRun(1);
     this->env->std_out->println("\nPS LIST");
     int offset = 0;
     int tableWidth;
@@ -64,6 +75,7 @@ int program::ps::process::run() {
     double CPU_usage;
 
     // table header settings
+    const int warnCycleTime = 20;
     const int columns = 6;
     const String header[columns] = {"pid","process name","state","time usage total","time usage (ms/s)","in percent"};
     String segLine[columns];
@@ -119,18 +131,26 @@ int program::ps::process::run() {
                 colSizes[1] = max(colSizes[1],cur.name.length());
                 colSizes[2] = max(colSizes[2],String(cur.state).length());
                 colSizes[3] = max(colSizes[3],formatMicrosToTime(cTelemetry.data[i].runtime).length());
-                colSizes[4] = max(colSizes[4],String((double)(cur.runtime/10)/100).length());
+                if (cur.longestCycleTime > warnCycleTime) {
+                    colSizes[4] = max(colSizes[4],((String((double)(cur.runtime/10)/100))+cur.longestCycleTime).length() + 3);
+                } else {
+                    colSizes[4] = max(colSizes[4],(String((double)(cur.runtime/10)/100)).length());
+                }
                 colSizes[5] = max(colSizes[5],String(round((double)cur.runtime/(double)timeDelta*10000/timeMultiplyer)/100).length()+1);
             }
 
             // general info
-            if (WiFi.isConnected()) {
-                IPAddress ip = WiFi.localIP();
-                wifiStatus = String() + ip[0] + "." + ip[1] + "." + ip[2] + "." + ip[3];
-            } else {
-                wifiStatus = "unconnected";
-            }
-            this->env->std_out->println(String("Uptime      : ")+formatMicrosToTime(micros64())+"                       WIFI         : "+wifiStatus);
+            #ifdef USE_WIFI
+                if (WiFi.isConnected()) {
+                    IPAddress ip = WiFi.localIP();
+                    wifiStatus = String() + ip[0] + "." + ip[1] + "." + ip[2] + "." + ip[3];
+                } else {
+                    wifiStatus = "unconnected";
+                }
+                wifiStatus = "                       WIFI         : "  + wifiStatus;
+            #endif
+
+            this->env->std_out->println(String("Uptime      : ")+formatMicrosToTime(micros64())+wifiStatus);
             secondLine = String("Free memory : ")+ESP.getFreeHeap();
             for (int i=secondLine.length(); i<49; i++) secondLine += ' ';
             secondLine += String()+"Cycle health : " + round(timeMultiplyer*100)/100;
@@ -174,7 +194,23 @@ int program::ps::process::run() {
                 }
                 for (int j=0;j<columns;j++) {
                     this->env->std_out->print(segLine[j]);
-                    for (int k = segLine[j].length(); k < colSizes[j]; k++) this->env->std_out->write(' ');
+
+                    // fill whitespace to align table
+                    int spaces = colSizes[j];
+                    bool printLine = false;
+                    if (j == 4 && i != -1 && tempTelemetry.data[i].longestCycleTime > warnCycleTime) {
+                        line = String(" ")+tempTelemetry.data[i].longestCycleTime+"ms";
+                        printLine = true;
+                        spaces -= line.length();
+                    }
+
+                    // warn if a cycle time is over warnCycleTime
+                    for (int k = segLine[j].length(); k < spaces; k++) this->env->std_out->write(' ');
+
+                    if (printLine)
+                        env->std_out->print(line);
+
+                    // write table delimiter
                     if (j != columns-1)
                         this->env->std_out->write((byte*)" | ", 3);
                 }

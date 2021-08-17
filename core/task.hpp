@@ -9,6 +9,7 @@ struct taskData
 {
     I_Task* task = nullptr;
     uint64_t runtime = 0;
+    unsigned int longestCycleTime = 0;
     int pid;
 };
 
@@ -17,6 +18,7 @@ struct strippedTaskData {
     int state;
     int pid;
     String name;
+    unsigned int longestCycleTime = 0;
 };
 
 struct strippedTaskDataContainer

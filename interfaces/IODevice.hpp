@@ -10,6 +10,8 @@ struct _getReturnType {
 
 class I_IODevice {
     public:
+        int lockedBy = 0;
+
         String name = "";
         String type = "";
         String UID  = "";
@@ -39,7 +41,24 @@ class I_IODevice {
 
         virtual bool  open(String location);
         virtual bool  close();
+
+        bool setLock(int pid);
 };
+
+bool I_IODevice::setLock(int pid) {
+    if (pid == 0) {
+        this->lockedBy = 0;
+        return true;
+    }
+    if (this->lockedBy == pid) {
+        return true;
+    }
+    if (!this->lockedBy) {
+        this->lockedBy = pid;
+        return true;
+    }
+    return false;
+}
 
 // default functions
 int I_IODevice::write(byte buffer[], int size) {

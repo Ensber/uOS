@@ -17,6 +17,13 @@ void programRegistry::addProgram(String name, programRegistry::functionPtr progr
 }
 
 programRegistry::returnState programRegistry::runProgram(pEnv env, String name, std::vector<String>* args) {
+    for (int i = 0; i < this->pAlias.size(); i++) {
+        if (this->pAlias[i].from == name) {
+            name = this->pAlias[i].to->at(0);
+            args->insert(args->begin(), this->pAlias[i].to->begin() + 1, this->pAlias[i].to->end());
+            break;
+        }
+    }
     returnState state;
     for (int i = 0; i < this->pReg.size(); i++){
         programEntry entry = this->pReg.at(i);
@@ -55,12 +62,33 @@ void programRegistry::removeProgram(String name) {
     }
 }
 
+void programRegistry::addAlias(String from, String to) {
+    programRegistry::programAlias alias;
+    alias.from = from;
+    alias.to = this->parseArgumentList(to);
+    this->pAlias.push_back(alias);
+}
+
+
+void programRegistry::removeAlias(String from) {
+    for (int i=0;i<this->pAlias.size(); i++) {
+        if (this->pAlias[i].from == from) {
+            delete this->pAlias[i].to;
+            this->pAlias.erase(this->pAlias.begin()+i);
+        }
+    }
+}
+
 std::vector<String>* programRegistry::parseArgumentList(String sList) {
-    // testcase:
-    // start argA "ArgB and some text" argC
     sList.trim();
-    sList += " ";
     std::vector<String>* output = new std::vector<String>;
+
+    // nothing to see here
+    if (sList == "") {
+        return output;
+    }
+        
+    sList += " ";
     int start = 0;
     int end = 0;
     int quote = 0;
