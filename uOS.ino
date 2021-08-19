@@ -82,7 +82,6 @@ void setup() {
     //for (int i=0;i<30;i++)
 
     program::shell::execute(env, "shell");
-    program::shell::execute(env, "fs i");
 
     // only mounts the sd card, if the call is down here... idk why
 

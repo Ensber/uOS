@@ -26,3 +26,4 @@
 *.app
 /.test/
 /.vscode/
+/storage/esp-manifest.json

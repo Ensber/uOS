@@ -3,6 +3,6 @@
     "board": "esp8266:esp8266:nodemcuv2",
     "sketch": "uOS.ino",
     "port": "COM6",
-    "postbuild": "postbuild.bat",
+    "postbuild": "postbuild.bat -arduino-auto",
     "output": ".test/build"
 }

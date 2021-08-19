@@ -17,8 +17,8 @@ namespace program {
                 private:
                     File cFile;
                     String line;
-                    long long int fileSizeWritten;
-                    long long int fileSizeToWrite;
+                    unsigned long int fileSizeWritten;
+                    unsigned long int fileSizeToWrite;
                     bool fileOpen = false;
                     int unwritten = -1;
                     std::vector<String>* argList = nullptr;

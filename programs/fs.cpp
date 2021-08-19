@@ -76,7 +76,7 @@ int program::fs::process::run() {
             this->env->std_out->println("fs> command: '"+this->line+"'");
             this->line = "";
             this->state = 1; // parse line
-            this->nextRun(0); // go immediantly to the next stepp
+            if (!REQ_LOW_PERFORMANCE) this->nextRun(0); // go immediantly to the next stepp
         }
         break;
     case 1: // parse line
@@ -127,6 +127,14 @@ int program::fs::process::run() {
             return 1; // exit loop
         }
         if (this->argList->size() < 2) { this->env->std_out->println("fs> required 2 arguments" + cStateInfo); break; }
+        if (this->argList->at(0) == ".mkdir") {
+            if (uFS.mkDir(this->argList->at(1))) {
+                this->env->std_out->println("fs> ok" + cStateInfo);
+            } else {
+                this->env->std_out->println("fs> could not create folder " + this->argList->at(1) + cStateInfo);
+            }
+            break;
+        }
         if (this->argList->at(0) == ".open") {
             if (this->argList->size() < 3) {
                 this->env->std_out->println("fs> '.open' required 2 additional arguments" + cStateInfo);
@@ -142,7 +150,7 @@ int program::fs::process::run() {
             this->fileOpen = true;
             break;
         }
-        if (this->argList->at(0) == ".write") {
+        if (this->argList->at(0) == ".write" || this->argList->at(0) == ".w") {
             if (!this->fileOpen) {
                 this->env->std_out->println("fs> no file open" + cStateInfo);
                 break;
@@ -158,25 +166,26 @@ int program::fs::process::run() {
     }
     case 2: // write file
     {
+        if (!REQ_LOW_PERFORMANCE) this->nextRun(0);
         // continue without output
         if (input == "") break;
         int bytesWritten = this->cFile.write(input.c_str());
         this->fileSizeWritten += bytesWritten;
         if (this->fileSizeWritten >= this->fileSizeToWrite) {
             this->state = 0; // read line
+            this->env->std_out->println(String()+"fs> Wrote " + (unsigned long)this->fileSizeWritten + " bytes (state 2/write file)");
         }
-        this->env->std_out->println(String()+"fs> Wrote " + bytesWritten + "bytes (finished: " + (this->state == 0) + ") (state 2/write file)");
         break;
     }
     case 3: // read file
         // run as fast/often as possible
-        this->nextRun(0);
+        if (!REQ_LOW_PERFORMANCE) this->nextRun(0);
         // try to write the (perhaps) unwritten character
         if (this->unwritten != -1) {
             if (this->env->std_out->write(this->unwritten)) {
                 this->unwritten = -1;
             } else {
-                this->nextRun(0.01);
+                if (!REQ_LOW_PERFORMANCE) this->nextRun(0.01);
                 break;
             }
         }
@@ -190,7 +199,7 @@ int program::fs::process::run() {
             if (!this->env->std_out->write(c)) {
                 this->unwritten = c;
                 // buffer propably full; try again later
-                this->nextRun(0.01);
+                if (!REQ_LOW_PERFORMANCE) this->nextRun(0.01);
                 break;
             }
             // timeout after 20ms

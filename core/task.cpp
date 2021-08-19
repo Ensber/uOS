@@ -59,7 +59,6 @@ uint64_t dispatcher::run() {
                 Serial.println(cTask.task->name + " stopped with exit code " + returnCode);
                     
                 this->killList.push_back(cTask.pid);
-                this->taskList.erase(this->taskList.begin() + i);
             }
         }
     }
