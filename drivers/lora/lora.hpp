@@ -1,7 +1,7 @@
 #ifndef DRV_LORA_HPP
 #define DRV_LORA_HPP
 
-#include "../interfaces/IODevice.hpp"
+#include "../../interfaces/IODevice.hpp"
 
 #include <SPI.h>
 #include <LoRa.h>

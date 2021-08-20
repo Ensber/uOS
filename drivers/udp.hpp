@@ -1,20 +1,27 @@
-#ifndef DRV_NULL_HPP
-#define DRV_NULL_HPP
+#ifndef DRV_udpDrv_HPP
+#define DRV_udpDrv_HPP
 
 #include "../interfaces/IODevice.hpp"
+#include "../core/misc.hpp"
+#include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
 
 #include <vector>
 
 namespace devices { 
-    class nullDrv : public I_IODevice {
+    class udpDrv : public I_IODevice {
         public:
             // custom start //
+            WiFiUDP Udp;
+            unsigned int localUdpPort = 0;
+            unsigned int remoteUdpPort = 0;
+            IPAddress remoteIP;
             // custom end //
 
-            nullDrv(std::vector<String>* arguments);
+            udpDrv(std::vector<String>* arguments);
 
-            // bool  set(String key, void* value);
-            // void* get(String key);
+            bool  set(String key, void* value);
+            _getReturnType get(String key);
 
             // int   parsePacket();
             int   available();
@@ -25,6 +32,8 @@ namespace devices {
             // int   beginPacket(bool implicid);
             int   write(byte byte);
             int   write(byte buffer[], int size);
+            int   println(String str);
+            int   print(String str);
             // void  endPacket();
             // void  endPacket(bool async);
 

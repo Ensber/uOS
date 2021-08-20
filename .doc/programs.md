@@ -94,7 +94,7 @@ namespace program {
 #endif
 ```
 
-Like in the first example, we create a class, but this time, we are also creating a class inside of our class, wich is a implementation of `I_Task`. It needs to implement a `int run()` wich, at best, is a state mashine. If it isn't.
+Like in the first example, we create a class, but this time, we are also creating a class inside of our class, wich is a implementation of `I_Task`. It needs to implement a `int run()` wich, at best, is a state mashine.
 
 ```C++
 #include "../core/programRegistry.hpp"

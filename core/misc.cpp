@@ -56,3 +56,11 @@ argResponse findArg(std::vector<String>* args, String name) {
     }
     return out;
 }
+
+IPAddress parseIP(String ip) {
+    IPAddress out;
+    ip += ".";
+    for (int i=0; i<4; i++) {
+        int n = 0;
+    }
+}

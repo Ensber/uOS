@@ -15,4 +15,6 @@ struct argResponse {
 };
 argResponse findArg(std::vector<String>* args, String name);
 
+IPAddress parseIP(String ip);
+
 #endif

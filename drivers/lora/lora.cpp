@@ -1,4 +1,4 @@
-#include "../core/misc.hpp"
+#include "../../core/misc.hpp"
 #include "lora.hpp"
 
 namespace devices {
