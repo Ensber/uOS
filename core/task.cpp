@@ -35,11 +35,21 @@ uint64_t dispatcher::run() {
     uint64_t nextExecution = -1;
     for (int i=0; i<this->taskList.size(); i++) {
         taskData cTask = this->taskList.at(i);
+
+        // find next execution time
         if (cTask.task->runAfter < nextExecution) 
             nextExecution = cTask.task->runAfter;
         
+        // get automatically next packet, if the available buffer is empty
+        if (!cTask.task->env->std_in->available())
+            cTask.task->env->std_in->parsePacket();
+
         // check if task is due
-        if (micros64() >= cTask.task->runAfter) {
+        if (
+                cTask.task->runOnTimer && micros64() >= cTask.task->runAfter || // Timer
+                cTask.task->runOnInput && cTask.task->env->std_in->available()  // Available > 0
+            ) {
+
             int returnCode;
             // run task
             if (this->telemetry) {
@@ -57,25 +67,23 @@ uint64_t dispatcher::run() {
             // kill task if the returncode is not 0
             if (returnCode) {
                 Serial.println(cTask.task->name + " stopped with exit code " + returnCode);
-                    
                 this->killList.push_back(cTask.pid);
             }
         }
     }
+
+    // kill processes
     if (this->killList.size()) {
         for (int k=0; k<this->killList.size(); k++) {
             int pid = this->killList[k];
             for (int i=0; i<this->taskList.size(); i++) {
                 if (this->taskList[i].pid == pid) {
-                    Serial.println(String("Killing: ")+this->taskList[i].task->name);
-                    // delete this->taskList[i].task->env;
-                    // delete this->taskList[i].task;
+                    this->taskList[i].task->env->std_err->println(String("Killing: ")+this->taskList[i].task->name);
                     this->taskList.erase(this->taskList.begin() + i);
                     break;
                 }
             }
         }
-        // std::vector<int>().swap(this->killList);
         this->killList.clear();
     }
     this->dispatcher_runtime += micros64() - dispatcher_start;

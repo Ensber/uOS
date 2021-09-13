@@ -5,8 +5,7 @@
 
 #include <vector>
 
-struct taskData
-{
+struct taskData {
     I_Task* task = nullptr;
     uint64_t runtime = 0;
     unsigned int longestCycleTime = 0;
@@ -21,8 +20,7 @@ struct strippedTaskData {
     unsigned int longestCycleTime = 0;
 };
 
-struct strippedTaskDataContainer
-{
+struct strippedTaskDataContainer {
     strippedTaskData* data; // array
     int size;
 };

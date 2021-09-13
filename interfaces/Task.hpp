@@ -15,6 +15,9 @@ class I_Task
         int pid = 0;
         String name = "<unnamed>";
 
+        bool runOnInput = false;
+        bool runOnTimer = true;
+
         I_Task(pEnv* env);
         virtual int run()=0;
         virtual void nextRun(double time); // set next runtime

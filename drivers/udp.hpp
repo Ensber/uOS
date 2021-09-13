@@ -12,10 +12,10 @@ namespace devices {
     class udpDrv : public I_IODevice {
         public:
             // custom start //
-            WiFiUDP Udp;
+            WiFiUDP *udpDevice;
             unsigned int localUdpPort = 0;
             unsigned int remoteUdpPort = 0;
-            IPAddress remoteIP;
+            String remoteIP;
             // custom end //
 
             udpDrv(std::vector<String>* arguments);
@@ -23,19 +23,20 @@ namespace devices {
             bool  set(String key, void* value);
             _getReturnType get(String key);
 
-            // int   parsePacket();
+            int   parsePacket();
             int   available();
             char  read();
             // char* readManny(int bytes);
 
-            // int   beginPacket();
+            int   beginPacket();
             // int   beginPacket(bool implicid);
             int   write(byte byte);
             int   write(byte buffer[], int size);
             int   println(String str);
             int   print(String str);
-            // void  endPacket();
+            void  endPacket();
             // void  endPacket(bool async);
+            void  flush();
 
         private:
             static int uidCounter;

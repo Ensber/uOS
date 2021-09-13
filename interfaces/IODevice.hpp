@@ -36,6 +36,7 @@ class I_IODevice {
         virtual int   println(byte buffer[], int size);
         virtual int   println(String str);
         virtual int   print(String str);
+        virtual void  flush(){};
         virtual void  endPacket(){};
         virtual void  endPacket(bool async){};
 
