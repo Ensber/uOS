@@ -59,7 +59,12 @@ int program::shell::process::run() {
     while (this->env->std_in->available()) {
         input += this->env->std_in->read();
     }
-    input = input.substring(0,input.length()-2);
+    int len = input.length()-1;
+
+    Serial.println(String("#> ") + input[len]);
+    
+    if (input[len] == '\n') len--;
+    input = input.substring(0,len);
     this->env->std_out->println(">>> "+input);
     if (input == ".lock") this->lockEnv();
     if (input == ".unlock") this->unlockEnv();

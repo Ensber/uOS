@@ -1,0 +1,28 @@
+User exception (panic/abort/assert)
+Abort called
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffe80 end: 3fffffc0 offset: 0000
+3ffffe80:  3fff02e4 40207ed3 00000020 401009f4  
+3ffffe90:  000000fe 00000000 00000000 00000000  
+3ffffea0:  00000000 00000000 00000000 aaaaaaab  
+3ffffeb0:  3fff02e0 00000000 3fff02e4 3ffef058  
+3ffffec0:  3fff02e4 3ffeee20 3fffff60 402126de  
+3ffffed0:  3fffff90 3fffff90 3fffff10 402126f4  
+3ffffee0:  3fff02e4 3fff03b4 3fffff10 4021bbd0  
+3ffffef0:  3fffff90 00000000 3fffff60 40206be9  
+3fffff00:  3fff02e4 3ffeee20 3fffff60 40208966  
+3fffff10:  3fff0000 3fffff78 80ffff60 40211598  
+3fffff20:  00000000 3fffff78 3fffff60 402115c8  
+3fffff30:  3fffff78 00000000 3fffff90 402113fc  
+3fffff40:  3fff02e4 3fffff90 3ffe907e 40211432  
+3fffff50:  3fff02e4 3fff03b4 3ffeef28 40208f87  
+3fffff60:  726f002f 20302074 81efef00 3fff03b4  
+3fffff70:  3fff03b4 3fff03b4 feef002f feefeffe  
+3fffff80:  81efeffe 3fff03b4 3fff03b4 3fff03b4  
+3fffff90:  feefef00 feefeffe 80efeffe feefeffe  
+3fffffa0:  3fffdad0 00000000 3ffef018 402120c8  
+3fffffb0:  feefeffe feefeffe 3ffe8528 40100c8d  
+<<<stack<<<
