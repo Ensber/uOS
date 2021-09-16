@@ -24,6 +24,6 @@
 *.exe
 *.out
 *.app
-/.test/
+/.test/build
 /.vscode/
 /storage/esp-manifest.json
