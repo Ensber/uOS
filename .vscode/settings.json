@@ -1,4 +1,7 @@
 {
+    "git": {
+        "path": "F:\\Program Files\\Git\\bin\\git.exe"
+    },
     "files.associations": {
         "iostream": "cpp",
         "ostream": "cpp",

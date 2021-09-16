@@ -10,7 +10,9 @@ int dispatcher::add(I_Task* task) {
     data.task = task;
     data.pid = this->pidCounter++;
     data.task->pid = data.pid; // tell the program, wich id it has got
+    Serial.println("@1.0");
     this->taskList.push_back(data);
+    Serial.println("@1.1");
 }
 
 bool dispatcher::kill(int pid) {
@@ -33,6 +35,7 @@ void dispatcher::clearTelemetry() {
 uint64_t dispatcher::run() {
     uint64_t dispatcher_start = micros64();
     uint64_t nextExecution = -1;
+    Serial.println("Dispatcher Start");
     for (int i=0; i<this->taskList.size(); i++) {
         taskData cTask = this->taskList.at(i);
 
@@ -41,14 +44,17 @@ uint64_t dispatcher::run() {
             nextExecution = cTask.task->runAfter;
         
         // get automatically next packet, if the available buffer is empty
+        Serial.println("checking availability & parsing");
         if (!cTask.task->env->std_in->available())
             cTask.task->env->std_in->parsePacket();
 
         // check if task is due
+        Serial.println("Now checking " + cTask.task->name);
         if (
                 cTask.task->runOnTimer && micros64() >= cTask.task->runAfter || // Timer
                 cTask.task->runOnInput && cTask.task->env->std_in->available()  // Available > 0
             ) {
+            Serial.println("[RUN]");
 
             int returnCode;
             // run task
@@ -87,6 +93,7 @@ uint64_t dispatcher::run() {
         this->killList.clear();
     }
     this->dispatcher_runtime += micros64() - dispatcher_start;
+    Serial.println("Dispatcher end");
     return nextExecution;
 }
 

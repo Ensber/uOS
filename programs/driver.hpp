@@ -2,6 +2,7 @@
 #define DRIVER_HPP
 
 #include "../core/pEnv.hpp"
+#include "../core/misc.hpp"
 
 #include <vector>
 

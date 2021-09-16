@@ -37,11 +37,14 @@ int program::driver::main(pEnv env, std::vector<String>* args) {
         if (!uAssert(env, arg != "", "usage: driver start <type>")) return 1;
 
         // initialize device
-        if (arg == "serial") device = new devices::serial(args);
+        if (arg == "serial")   device = new devices::serial(args);
+        if (arg == "null")     device = new devices::nullDrv(args);
         #ifdef USE_LORA
-            if (arg == "lora")   device = new devices::lora(args);
+            if (arg == "lora") device = new devices::lora(args);
         #endif
-        if (arg == "null")   device = new devices::nullDrv(args);
+        #ifdef USE_WIFI
+            // if (arg == "udp")      device = new devices::udpDrv(args);
+        #endif
 
         if (!uAssert(env, device != nullptr, "device '" + arg + "' not found")) return 1;
         if (!device->initialized) {

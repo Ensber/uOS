@@ -17,8 +17,10 @@
 #include "serial.hpp"
 #include "serial.cpp"
 
-#include "udp.hpp"
-#include "udp.cpp"
+#ifdef USE_WIFI
+    // #include "udp.hpp"
+    // #include "udp.cpp"
+#endif
 
 void initDrivers() {
     #ifdef USE_LORA

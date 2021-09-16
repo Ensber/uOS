@@ -13,16 +13,6 @@
 #include "drivers/_includeDrivers.hpp"
 #include "programs/_includePrograms.hpp"
 
-struct a
-{
-    String test;
-};
-
-struct b
-{
-    a* aLink;
-};
-
 void setup() {
     Serial.begin(115200);
     Serial.println();
@@ -51,9 +41,11 @@ void setup() {
     #ifdef USE_LORA // init lora
         program::shell::execute(env, "driver init lora -f 433000000 -pCS 15 -pRST 5 -pIRQ 4");
     #endif
+    // program::shell::execute(env, "driver init udp -lp 23 -rIP 192.168.2.110");
 
     delay(100);
 
+    Serial.println("[INFO] Mounting SD-Card...");
     if (uFS.attachSD("/sd/", 2)) Serial.println("[INFO] Mounted SD-Card at '/sd/'");
     else                         Serial.println("[WARN] Failed to mount SD-Card at '/sd/'");
     
@@ -78,10 +70,13 @@ void setup() {
     Serial.println(String("AVAILABLE MEM AFTER : ")+mem2);
     Serial.println(String("Difference: ")+(mem-mem2));
 
-    //program::shell::execute(env, "ps");
+    Serial.println("before ps exec");
+    program::shell::execute(env, "ps");
+    Serial.println("after ps exec");
     //for (int i=0;i<30;i++)
 
-    program::shell::execute(env, "shell");
+    // program::shell::execute(env, "shell");
+
 }
 
 void loop() {

@@ -7,6 +7,7 @@ namespace devices {
     int udpDrv::uidCounter = 0;
 
     udpDrv::udpDrv(std::vector<String>* arguments) {
+        Serial.println("BEFORE UDP DRV INIT");
         this->type = "udpDrv";
 
         auto res  = findArg(arguments, "-lp");
@@ -22,10 +23,12 @@ namespace devices {
         if (!res.found) {this->error = "[-rIP] no IP set"; return;}
         this->remoteIP = res.arg;
 
+        Serial.println("before driver finalization");
         // commit the module to the device list, IF it initialized correctly
         initialized = true;
         this->UID = this->type + this->uidCounter++;
         deviceList.push_back(this);
+        Serial.println("AFTER UDP DRV");
     }
 
     // pass through to the udpDrv device
