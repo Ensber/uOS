@@ -19,28 +19,17 @@ String program::ps::version = "\nProcess 0.1.0";
 int program::ps::main(pEnv env, std::vector<String>* args) {
     env.std_out->println(program::ps::version);
 
-    Serial.println("@0");
-
     if (args->size() == 0) {
-        Serial.println("@0.0");
         program::ps::process* proc = new program::ps::process(new pEnv(env));
-        Serial.println("@0.1");
         proc->name = "ps";
         globalEventloop.add(proc);
-        Serial.println("@0.2");
-        Serial.println("EXIT @1");
         return 0;
     }
 
-    Serial.println("@1");
-
     if (args->size() == 1) {
         env.std_err->println("usage: ps <command> <args>");
-        Serial.println("EXIT @2");
         return 1;
     }
-
-    Serial.println("@0");
 
     String command = args->at(0);
     String arg = args->at(1);
@@ -52,8 +41,6 @@ int program::ps::main(pEnv env, std::vector<String>* args) {
             env.std_out->println(String()+"Process " + pid + " could not be found and/or terminated");
         }
     }
-
-    Serial.println("PS main end");
 }
 
 
